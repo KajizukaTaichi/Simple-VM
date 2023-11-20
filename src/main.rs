@@ -133,7 +133,7 @@ impl VirtualMachine {
         self.show();
         while self.pc < self.program.len() {
             let instruction = self.program[self.pc];
-            println!("{:?}を実行します", instruction);
+            println!("{}行目の{:?}を実行します",self.pc , instruction);
             match instruction {
                 Instruction::Add => {
                     let b = self.stack.pop().expect("Stack underflow");
@@ -164,7 +164,7 @@ impl VirtualMachine {
                 Instruction::JumpIfZero(target) => {
                     let condition = self.stack.pop().expect("Stack underflow");
                     if condition == 0 {
-                        println!("{target}にジャンプします");
+                        println!("{target}行目にジャンプします");
                         self.pc = target;
                         continue;
                     }
