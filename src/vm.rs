@@ -3,16 +3,16 @@ use crate::io::input;
 /// バイナリに変換
 pub fn as_bin(item: Instruction) -> String {
     format!(
-        "{:0>9b}",
+        "{:0>8b}",
         match item {
             Instruction::Add => 1,
             Instruction::Sub => 2,
             Instruction::Push(i) => format!("3{i}").parse().unwrap(),
             Instruction::Pop => 4,
             Instruction::Compare => 5,
-            Instruction::JumpIfZero(i) => format!("6{i}").parse().unwrap(),
-            Instruction::Load(i) => format!("7{i}").parse().unwrap(),
-            Instruction::Store(i) => format!("8{i}").parse().unwrap(),
+            Instruction::JumpIfZero => 6,
+            Instruction::Load => 7,
+            Instruction::Store => 8,
             Instruction::Input => 9,
             Instruction::Output => 10,
             Instruction::Halt => 11,
@@ -27,9 +27,9 @@ pub enum Instruction {
     Push(i32),
     Pop,
     Compare,
-    JumpIfZero(usize),
-    Load(usize),
-    Store(usize),
+    JumpIfZero,
+    Load,
+    Store,
     Input,
     Output,
     Halt,
@@ -113,24 +113,27 @@ impl VirtualMachine {
                     self.stack.push(0);
                 }
             }
-            Instruction::JumpIfZero(target) => {
+            Instruction::JumpIfZero => {
+                let target = self.stack.pop().expect("Stack underflow");
                 let condition = self.stack.pop().expect("Stack underflow");
                 if condition == 0 {
                     println!("条件が一致したので{target}行目にジャンプします");
-                    self.pc = target;
+                    self.pc = target as usize;
                 } else {
                     println!("条件が一致しなかったのでジャンプしません")
                 }
             }
-            Instruction::Load(index) => {
+            Instruction::Load => {
+                let index = self.stack.pop().expect("Stack underflow");
                 println!("メモリ{index}を読み込みます");
-                let value = self.data[index];
+                let value = self.data[index as usize];
                 self.stack.push(value);
             }
-            Instruction::Store(index) => {
+            Instruction::Store => {
+                let index = self.stack.pop().expect("Stack underflow");
                 let value = self.stack.pop().expect("Stack underflow");
                 println!("メモリ{index}に{value}を書き込みます");
-                self.data[index] = value;
+                self.data[index as usize] = value;
             }
             Instruction::Input => {
                 println!("入力を受け付けます");
