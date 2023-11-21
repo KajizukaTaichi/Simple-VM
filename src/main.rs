@@ -12,8 +12,8 @@ fn main() {
     println!("コンピュータの動作原理を深く学ぶ仮想マシン");
     println!("(c) 2023 梶塚太智. All right reserved");
     let args = env::args().collect::<Vec<_>>();
-    
-    if args.len() > 1 { 
+
+    if args.len() > 1 {
         match io::get_file_contents(args[1].clone()) {
             Ok(code) => {
                 let res = assembly::assembly(code);
@@ -21,10 +21,10 @@ fn main() {
                 let memory: Vec<i32> = res.1;
                 let mut vm = VirtualMachine::new(program, memory);
                 vm.run();
-                println!("正常にプログラムが終了しました")
             }
-            Err(e) => {println!("エラー {e}")},
-        }}
-        
-        
+            Err(e) => {
+                println!("エラー {e}")
+            }
+        }
+    }
 }
