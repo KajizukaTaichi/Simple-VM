@@ -99,8 +99,12 @@ impl VirtualMachine {
                 println!("{a}から{b}を引きます");
                 self.stack.push(a - b);
             }
-            Instruction::Push(value) => self.stack.push(value),
+            Instruction::Push(value) => {
+                println!("{value}をスタックに追加します");
+                self.stack.push(value)
+            }
             Instruction::Pop => {
+                println!("スタックから値を削除します");
                 let _ = self.stack.pop().expect("Stack underflow");
             }
             Instruction::Compare => {
@@ -108,8 +112,10 @@ impl VirtualMachine {
                 let a = self.stack.pop().expect("Stack underflow");
                 println!("{a}と{b}を比較します");
                 if a == b {
+                    println!("等しいので1を返します");
                     self.stack.push(1);
                 } else {
+                    println!("違うので0を返します");
                     self.stack.push(0);
                 }
             }
@@ -117,10 +123,10 @@ impl VirtualMachine {
                 let target = self.stack.pop().expect("Stack underflow");
                 let condition = self.stack.pop().expect("Stack underflow");
                 if condition == 0 {
-                    println!("条件が一致したので{target}行目にジャンプします");
+                    println!("値が0に一致したので{target}行目にジャンプします");
                     self.pc = target as usize;
                 } else {
-                    println!("条件が一致しなかったのでジャンプしません")
+                    println!("値が0にが一致しなかったのでジャンプしません")
                 }
             }
             Instruction::Load => {
@@ -140,6 +146,7 @@ impl VirtualMachine {
                 self.stack.push(input("[入力]> ").parse().unwrap_or(0));
             }
             Instruction::Output => {
+                println!("出力に表示します");
                 println!("[出力]: {}", self.stack.pop().expect("Stack underflow"));
             }
             Instruction::Halt => {
