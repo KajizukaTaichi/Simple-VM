@@ -41,6 +41,8 @@ fn get_file_contents(name: String) -> Result<String, Error> {
 }
 /// アセンブラ
 fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
+    println!("アセンブル中・・・");
+    
     enum Mode {
         Data,
         Program,
@@ -52,12 +54,12 @@ fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
 
     for code in asm.split("\n") {
         let args: Vec<&str> = code.split(" ").collect();
-        if args[0] == "DATA" {
+        if args[0] == "DATA" || args[0] == "data" {
             mode = Mode::Data;
             continue;
         }
 
-        if args[0] == "PROGRAM" {
+        if args[0] == "PROGRAM" || args[0] == "program"{
             mode = Mode::Program;
             continue;
         }
@@ -157,6 +159,7 @@ impl VirtualMachine {
     }
 
     fn run(&mut self) {
+        println!("プログラムを実行します");
         while self.pc < self.program.len() {
             let instruction = self.program[self.pc].clone();
             println!("{}行目の{:?}を実行します", self.pc, instruction);
