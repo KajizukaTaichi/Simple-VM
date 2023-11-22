@@ -1,29 +1,28 @@
 program
 
+  ; カウンタを出力する
   push  0
-  load    ; カウンタを出力する
-  
+  load    
   output
 
+  ; カウンタの値をインクリメントする
   push 0
-  load   　; カウンタの値をインクリメントする
-  
+  load   
   push 1
-  
   add
-
   push 0
   store 
 
+  
+  ; 目標値とカウンタが等しいか？
   push 0
   load
-
-  push 1　; 目標値とカウンタを比較する
+  push 1　
   load  
-  
-  comp
+  comp = 
 
-  push 0 ; 一致しなかったら最初に戻る
+  ; 一致しなかったら最初に戻る
+  push 0
   jump  　
 
   halt
