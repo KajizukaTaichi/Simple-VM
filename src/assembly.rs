@@ -1,4 +1,4 @@
-use crate::vm::{as_bin, Instruction};
+use crate::vm::{as_bin, Instruction, Comparison};
 
 enum Mode {
     Data,
@@ -37,7 +37,16 @@ pub fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
                 "SUB" | "sub" => Instruction::Sub,
                 "PUSH" | "push" => Instruction::Push(args[1].trim().parse().unwrap_or(0)),
                 "POP" | "pop" => Instruction::Pop,
-                "COMP" | "comp" => Instruction::Compare,
+                "COMP" | "comp" => Instruction::Compare(match args[1].trim() {
+                    "=" => Comparison::Equal,
+                    "!" => Comparison::NotEqual,
+                    "<" => Comparison::LessThan,
+                    ">" => Comparison::GreaterThan,
+                    _ => {
+                        println!("エラー! 不明な命令です");
+                        continue;
+                    }
+                }),
                 "JUMP" | "jump" => Instruction::JumpIfZero,
                 "LOAD" | "load" => Instruction::Load,
                 "STORE" | "store" => Instruction::Store,

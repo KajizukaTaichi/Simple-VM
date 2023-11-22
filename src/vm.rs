@@ -7,9 +7,9 @@ pub fn as_bin(item: Instruction) -> String {
         match item {
             Instruction::Add => 1,
             Instruction::Sub => 2,
-            Instruction::Push(i) => format!("3{i}").parse().unwrap(),
+            Instruction::Push(_) => 3,
             Instruction::Pop => 4,
-            Instruction::Compare => 5,
+            Instruction::Compare(_) => 5,
             Instruction::JumpIfZero => 6,
             Instruction::Load => 7,
             Instruction::Store => 8,
@@ -26,13 +26,21 @@ pub enum Instruction {
     Sub,
     Push(i32),
     Pop,
-    Compare,
+    Compare(Comparison),
     JumpIfZero,
     Load,
     Store,
     Input,
     Output,
     Halt,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum Comparison {
+    Equal,
+    NotEqual,
+    LessThan,
+    GreaterThan,
 }
 
 pub struct VirtualMachine {
@@ -107,15 +115,28 @@ impl VirtualMachine {
                 println!("スタックから値を削除します");
                 let _ = self.stack.pop().expect("Stack underflow");
             }
-            Instruction::Compare => {
+            Instruction::Compare(comparison) => {
                 let b = self.stack.pop().expect("Stack underflow");
                 let a = self.stack.pop().expect("Stack underflow");
-                println!("{a}と{b}を比較します");
-                if a == b {
-                    println!("等しいので1を返します");
+                println!("条件「{} {} {}」を判断します", a, 
+                    match comparison {
+                    Comparison::Equal => "=",
+                    Comparison::NotEqual => "!",
+                    Comparison::LessThan => "<",
+                    Comparison::GreaterThan => ">",
+                }
+                , b );
+                let result = match comparison {
+                    Comparison::Equal => a == b,
+                    Comparison::NotEqual => a != b,
+                    Comparison::LessThan => a < b,
+                    Comparison::GreaterThan => a > b,
+                };
+                if result {
+                    println!("条件が一致したので1を返します");
                     self.stack.push(1);
                 } else {
-                    println!("違うので0を返します");
+                    println!("条件が一致なかったので0を返します");
                     self.stack.push(0);
                 }
             }
