@@ -1,4 +1,4 @@
-use crate::vm::{as_bin, Instruction, Comparison};
+use crate::vm::{as_bin, Comparison, Instruction};
 
 enum Mode {
     Data,
