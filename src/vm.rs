@@ -41,7 +41,8 @@ pub struct VirtualMachine {
     data: Vec<i32>,            // データ領域
     stack: Vec<i32>,           // スタック
     pc: usize,                 // プログラムカウンタ
-    mode: Mode,                //　実行モード
+    mode: Mode,                // 実行モード
+    output: String             // 出力した文字列 
 }
 
 impl VirtualMachine {
@@ -51,8 +52,8 @@ impl VirtualMachine {
             data: vec![0; 100], // データ領域を100要素の配列として初期化
             stack: Vec::new(),
             pc: 0,
-
             mode,
+            output: String::new()
         };
 
         for i in 0..data.len() {
@@ -81,6 +82,11 @@ impl VirtualMachine {
                     if self.data[i] != 0 {
                         println!("| {i:0>3} :  {}", self.data[i]);
                     }
+                }
+            } else if menu.contains("o") {
+                println!("+-- 標準出力");
+                for i in self.output.split("\n").collect::<Vec<&str>>(){
+                    println!("| {i}");
                 }
             } else if menu.contains("exit") {
                 input("デバッグを中断します");
@@ -194,7 +200,12 @@ impl VirtualMachine {
                 self.log_print(format!("UTF-8の文字として出力します"));
                 let value = self.stack.pop().expect("Stack underflow");
                 if let Some(c) = std::char::from_u32(value as u32) {
-                    print!("{}", c);
+                    if let Mode::Debug = self.mode {
+                        println!("[出力]: {}", c);
+                        self.output.push(c);
+                    } else {
+                        print!("{c}")
+                    }
                 } else {
                     panic!("Invalid UTF-8 character code");
                 }

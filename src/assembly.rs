@@ -69,7 +69,7 @@ pub fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
         }
     }
     println!("変換されたバイトコード");
-    result.iter().for_each(|r| println!("| {:?}", r));
+    result.iter().for_each(|r: &Instruction| println!("| {:?}", r));
 
     return (result, memory);
 }
