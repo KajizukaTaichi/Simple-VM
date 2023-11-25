@@ -13,7 +13,6 @@ program
   push 0
   store 
 
-  
   ; 目標値とカウンタが等しいか？
   push 0
   load

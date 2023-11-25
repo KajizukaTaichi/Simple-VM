@@ -35,6 +35,9 @@ pub fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
             result.push(match args[0] {
                 "ADD" | "add" => Instruction::Add,
                 "SUB" | "sub" => Instruction::Sub,
+                "MUL" | "mul" => Instruction::Mul,
+                "DIV" | "div" => Instruction::Div,
+                "MOD" | "mod" => Instruction::Mod,
                 "PUSH" | "push" => Instruction::Push(args[1].trim().parse().unwrap_or(0)),
                 "POP" | "pop" => Instruction::Pop,
                 "COMP" | "comp" => Instruction::Compare(match args[1].trim() {

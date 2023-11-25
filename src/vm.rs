@@ -1,12 +1,13 @@
 use crate::io::input;
 
-
-
 /// 命令セット
 #[derive(Debug, Clone, Copy)]
 pub enum Instruction {
     Add,
     Sub,
+    Mul,
+    Div,
+    Mod,
     Push(i32),
     Pop,
     Compare(Comparison),
@@ -105,6 +106,24 @@ impl VirtualMachine {
                 self.log_print(format!("{a}から{b}を引きます"));
                 self.stack.push(a - b);
             }
+            Instruction::Mul => {
+                let b = self.stack.pop().expect("Stack underflow");
+                let a = self.stack.pop().expect("Stack underflow");
+                self.log_print(format!("{a}と{b}を掛けます"));
+                self.stack.push(a * b);
+            }
+            Instruction::Div => {
+                let b = self.stack.pop().expect("Stack underflow");
+                let a = self.stack.pop().expect("Stack underflow");
+                self.log_print(format!("{a}を{b}で割ります"));
+                self.stack.push(a / b);
+            }
+            Instruction::Mod => {
+                let b = self.stack.pop().expect("Stack underflow");
+                let a = self.stack.pop().expect("Stack underflow");
+                self.log_print(format!("{a}÷{b}の余りを求めます"));
+                self.stack.push(a % b);
+            }
             Instruction::Push(value) => {
                 self.log_print(format!("{value}をスタックに追加します"));
                 self.stack.push(value)
@@ -173,10 +192,11 @@ impl VirtualMachine {
             }
             Instruction::Output => {
                 self.log_print(format!("出力に表示します"));
-                if let Mode::Execute = self.mode {
-                    println!("{}", self.stack.pop().expect("Stack underflow"))
+                let value = self.stack.pop().expect("Stack underflow");
+                if let Some(c) = std::char::from_u32(value as u32) {
+                    print!("{}", c);
                 } else {
-                    println!("[出力]: {}", self.stack.pop().expect("Stack underflow"))
+                    panic!("Invalid UTF-8 character code");
                 }
             }
             Instruction::Halt => {
