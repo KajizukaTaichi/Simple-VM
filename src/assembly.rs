@@ -65,7 +65,7 @@ pub fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
             }
         }
     }
-    println!("変換されたプログラム");
+    println!("変換されたバイトコード");
     result.iter().for_each(|r| println!("| {:?}", r));
 
     return (result, memory);
