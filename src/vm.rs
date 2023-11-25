@@ -1,25 +1,8 @@
 use crate::io::input;
 
-/// バイナリに変換
-pub fn as_bin(item: Instruction) -> String {
-    format!(
-        "{:0>8b}",
-        match item {
-            Instruction::Add => 1,
-            Instruction::Sub => 2,
-            Instruction::Push(_) => 3,
-            Instruction::Pop => 4,
-            Instruction::Compare(_) => 5,
-            Instruction::JumpIfZero => 6,
-            Instruction::Load => 7,
-            Instruction::Store => 8,
-            Instruction::Input => 9,
-            Instruction::Output => 10,
-            Instruction::Halt => 11,
-        }
-    )
-}
 
+
+/// 命令セット
 #[derive(Debug, Clone, Copy)]
 pub enum Instruction {
     Add,
@@ -35,6 +18,7 @@ pub enum Instruction {
     Halt,
 }
 
+/// 比較演算子
 #[derive(Debug, Clone, Copy)]
 pub enum Comparison {
     Equal,
@@ -43,19 +27,20 @@ pub enum Comparison {
     GreaterThan,
 }
 
+/// 実行モード
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
     Execute,
     Debug,
 }
 
+/// 仮想マシン
 pub struct VirtualMachine {
-    program: Vec<Instruction>, //プログラム領域
+    program: Vec<Instruction>, // プログラム領域
     data: Vec<i32>,            // データ領域
-    stack: Vec<i32>,           //スタック
-    pc: usize,                 //プログラムカウンタ
-
-    mode: Mode,
+    stack: Vec<i32>,           // スタック
+    pc: usize,                 // プログラムカウンタ
+    mode: Mode,                //　実行モード
 }
 
 impl VirtualMachine {
@@ -207,9 +192,9 @@ impl VirtualMachine {
             self.pc += 1;
             let instruction = self.program[self.pc - 1].clone();
             self.log_print(format!(
-                "プログラム{}行目の「{}」を実行します",
+                "プログラム{}行目の「{:?}」を実行します",
                 self.pc - 1,
-                as_bin(instruction)
+                instruction
             ));
             self.execute(instruction);
 

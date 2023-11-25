@@ -1,4 +1,4 @@
-use crate::vm::{as_bin, Comparison, Instruction};
+use crate::vm::{Comparison, Instruction};
 
 enum Mode {
     Data,
@@ -66,7 +66,7 @@ pub fn assembly(asm: String) -> (Vec<Instruction>, Vec<i32>) {
         }
     }
     println!("変換されたプログラム");
-    result.iter().for_each(|r| println!("| {}", as_bin(*r)));
+    result.iter().for_each(|r| println!("| {:?}", r));
 
     return (result, memory);
 }
