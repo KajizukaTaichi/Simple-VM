@@ -1,6 +1,6 @@
 program
   
-  ; カウンタを加算する
+  ; ポインタを加算する
   push 0
   load
   push 1
@@ -20,7 +20,7 @@ program
 
   push 1
   load
-  push 2
+  push 1
   add
 
   comp =
@@ -30,8 +30,8 @@ program
 
   halt
 data
-   01 ; カウンタ
-   12 ; 文字列の長さ
+   01 ; ポインタ
+   13 ; 文字列の長さ
 
    72 ; 'H'のUTF-8コード
   101 ; 'e'のUTF-8コード
