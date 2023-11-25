@@ -197,8 +197,8 @@ impl VirtualMachine {
                 }
             }
             Instruction::Output => {
-                self.log_print(format!("UTF-8の文字として出力します"));
                 let value = self.stack.pop().expect("Stack underflow");
+                self.log_print(format!("{value}をUTF-8の文字として出力します"));
                 if let Some(c) = std::char::from_u32(value as u32) {
                     if let Mode::Debug = self.mode {
                         println!("[出力]: {}", c);
