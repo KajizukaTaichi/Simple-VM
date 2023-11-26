@@ -184,14 +184,14 @@ impl VirtualMachine {
             }
             Instruction::Load => {
                 let index = self.pop();
-                self.log_print(format!("メモリ{index}を読み込みます"));
+                self.log_print(format!("メモリ{index}番地の値を読み込みます"));
                 let value = self.memory[index as usize];
                 self.stack.push(value);
             }
             Instruction::Store => {
                 let index = self.pop();
                 let value = self.pop();
-                self.log_print(format!("メモリ{index}に{value}を書き込みます"));
+                self.log_print(format!("メモリ{index}番地に{value}を書き込みます"));
                 self.memory[index as usize] = value;
             }
             Instruction::Input => {
