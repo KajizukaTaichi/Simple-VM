@@ -1,9 +1,9 @@
 mod assembly;
+mod instruction;
 mod io;
 mod vm;
 
 use std::env;
-use vm::Instruction;
 use vm::Mode;
 use vm::VirtualMachine;
 
@@ -25,10 +25,8 @@ fn main() {
                 } else {
                     Mode::Debug
                 };
-                let res = assembly::assembly(code);
-                let program: Vec<Instruction> = res.0;
-                let memory: Vec<i32> = res.1;
-                let mut vm = VirtualMachine::new(program, memory, mode);
+                let memory = assembly::assembly(code);
+                let mut vm = VirtualMachine::new(memory, mode);
                 vm.run();
             }
             Err(e) => {

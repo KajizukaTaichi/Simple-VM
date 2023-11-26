@@ -1,48 +1,15 @@
 program
-  
-  ; ポインタを加算する
-  push 0
-  load
-  push 1
-  add
-  push 0
-  store
+    push 7
+    load
 
-  ; 出力する
-  push 0
-  load
-  load
-  output
+    push 8
+    load
 
-　; 比較する
-  push 0
-  load
+    mul
 
-  push 1
-  load
-  push 1
-  add
+    output
 
-  comp =
-
-  push 0
-  jump
-
-  halt
+    halt
 data
-   01 ; ポインタ
-   13 ; 文字列の長さ
-
-   72 ; 'H'のUTF-8コード
-  101 ; 'e'のUTF-8コード
-  108 ; 'l'のUTF-8コード
-  108 ; 'l'のUTF-8コード
-  111 ; 'o'のUTF-8コード
-   44 ; ','のUTF-8コード
-   32 ; ' 'のUTF-8コード
-  119 ; 'w'のUTF-8コード
-  111 ; 'o'のUTF-8コード
-  114 ; 'r'のUTF-8コード
-  108 ; 'l'のUTF-8コード
-  100 ; 'd'のUTF-8コード
-   33 ; '!'のUTF-8コード
+    5
+    7
