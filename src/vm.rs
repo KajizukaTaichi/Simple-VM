@@ -231,10 +231,6 @@ impl VirtualMachine {
         println!("プログラムを実行します");
         while self.pc < self.memory.len() {
             let instruction = self.memory[self.pc].clone();
-            self.log_print(format!(
-                "プログラム{}行目の「{:0>8b}」を実行します",
-                self.pc, instruction
-            ));
             let result = match instruction {
                 0 => Instruction::Add,
                 1 => Instruction::Sub,
@@ -262,6 +258,10 @@ impl VirtualMachine {
                     continue;
                 }
             };
+            self.log_print(format!(
+                "メモリ{}番目の命令コード{}を実行します",
+                self.pc, instruction
+            ));
             self.execute(result);
 
             if let Mode::Debug = self.mode {

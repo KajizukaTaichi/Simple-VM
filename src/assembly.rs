@@ -63,8 +63,6 @@ pub fn assembly(asm: String) -> Vec<i32> {
             }
         }
     }
-    println!("変換されたバイトコード");
-    memory.iter().for_each(|r| println!("| {:0>8b}", r));
 
     return memory;
 }
