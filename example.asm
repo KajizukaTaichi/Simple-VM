@@ -1,13 +1,14 @@
 program
-    push 7
+    push 11
     load
 
-    push 8
+    push 12
     load
 
     mul
 
-    output
+    push 13
+    store
 
     halt
 data

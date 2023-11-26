@@ -20,7 +20,13 @@ pub struct VirtualMachine {
 impl VirtualMachine {
     pub fn new(memory: Vec<i32>, mode: Mode) -> VirtualMachine {
         let mut vm = VirtualMachine {
-            memory: memory.clone(),
+            memory: {
+                let mut temp = vec![0; 512];
+                for i in 0..memory.clone().len() {
+                    temp[i] = memory[i];
+                }
+                temp
+            },
             stack: Vec::new(),
             pc: 0,
             mode,
@@ -227,8 +233,7 @@ impl VirtualMachine {
             let instruction = self.memory[self.pc].clone();
             self.log_print(format!(
                 "プログラム{}行目の「{:0>8b}」を実行します",
-                self.pc,
-                instruction
+                self.pc, instruction
             ));
             let result = match instruction {
                 0 => Instruction::Add,
@@ -252,10 +257,13 @@ impl VirtualMachine {
                 15 => Instruction::Input,
                 16 => Instruction::Output,
                 17 => Instruction::Halt,
-                _ => {self.pc+=1;continue},
+                _ => {
+                    self.pc += 1;
+                    continue;
+                }
             };
             self.execute(result);
-            
+
             if let Mode::Debug = self.mode {
                 self.debug_menu();
             }
