@@ -1,5 +1,8 @@
+use std::{fs::File, io::Read};
+
+use crate::assembly;
 use crate::instruction::Instruction;
-use crate::io::input;
+use crate::io;
 
 /// 実行モード
 #[derive(Debug, Clone, Copy)]
@@ -12,13 +15,17 @@ pub enum Mode {
 pub struct VirtualMachine {
     memory: Vec<i32>, // メモリ内部
     stack: Vec<i32>,  // スタック
+    storage: File,    // 補助記憶装置
     pc: usize,        // プログラムカウンタ
     mode: Mode,       // 実行モード
     output: String,   // 出力した文字列
 }
 
 impl VirtualMachine {
-    pub fn new(memory: Vec<i32>, mode: Mode) -> VirtualMachine {
+    pub fn new(mut storage: File, mode: Mode) -> VirtualMachine {
+        let mut code = String::new();
+        let _ = storage.read_to_string(&mut code);
+        let memory = assembly::assembly(code.to_string());
         let mut vm = VirtualMachine {
             memory: {
                 let mut temp = vec![0; 512];
@@ -28,6 +35,7 @@ impl VirtualMachine {
                 temp
             },
             stack: Vec::new(),
+            storage,
             pc: 0,
             mode,
             output: String::new(),
@@ -50,7 +58,7 @@ impl VirtualMachine {
     /// デバッグメニューを表示する
     fn debug_menu(&mut self) {
         loop {
-            let menu = input("デバッグメニュー>>> ");
+            let menu = io::input("デバッグメニュー>>> ");
             if menu.contains("s") {
                 println!("スタック {:?}", self.stack);
             } else if menu.contains("m") {
@@ -66,7 +74,7 @@ impl VirtualMachine {
                     println!("| {i}");
                 }
             } else if menu.contains("exit") {
-                input("デバッグを中断します");
+                io::input("デバッグを中断します");
                 std::process::exit(0)
             } else {
                 println!("継続します");
@@ -197,9 +205,9 @@ impl VirtualMachine {
             Instruction::Input => {
                 self.log_print(format!("入力を受け付けます"));
                 if let Mode::Execute = self.mode {
-                    self.stack.push(input("> ").parse().unwrap_or(0));
+                    self.stack.push(io::input("> ").parse().unwrap_or(0));
                 } else {
-                    self.stack.push(input("[入力]> ").parse().unwrap_or(0));
+                    self.stack.push(io::input("[入力]> ").parse().unwrap_or(0));
                 }
             }
             Instruction::Output => {
@@ -215,6 +223,24 @@ impl VirtualMachine {
                 } else {
                     panic!("Invalid UTF-8 character code");
                 }
+            }
+            Instruction::Read => {
+                let index = self.pop();
+                self.stack.push(
+                    io::read_specific_line(&self.storage, index as usize)
+                        .unwrap()
+                        .parse()
+                        .unwrap_or(0),
+                );
+            }
+            Instruction::Write => {
+                let index = self.pop();
+                let value = self.pop();
+                let _ = io::write_specific_line(
+                    &self.storage,
+                    index as usize,
+                    value.to_string().as_str(),
+                );
             }
             Instruction::Halt => {
                 self.log_print(format!("プログラムを終了します"));
@@ -252,7 +278,9 @@ impl VirtualMachine {
                 14 => Instruction::Store,
                 15 => Instruction::Input,
                 16 => Instruction::Output,
-                17 => Instruction::Halt,
+                17 => Instruction::Read,
+                18 => Instruction::Write,
+                19 => Instruction::Halt,
                 _ => {
                     self.pc += 1;
                     continue;

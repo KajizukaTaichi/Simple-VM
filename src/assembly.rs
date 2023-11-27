@@ -50,7 +50,9 @@ pub fn assembly(asm: String) -> Vec<i32> {
                 "store" => memory.push(14),
                 "input" => memory.push(15),
                 "output" => memory.push(16),
-                "halt" => memory.push(17),
+                "read" => memory.push(17),
+                "write" => memory.push(18),
+                "halt" => memory.push(19),
                 "" => continue,
                 _ => {
                     println!("エラー! 不明な命令です");

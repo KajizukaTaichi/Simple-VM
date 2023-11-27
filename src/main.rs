@@ -14,8 +14,8 @@ fn main() {
     let args = env::args().collect::<Vec<_>>();
 
     if args.len() > 1 {
-        match io::get_file_contents(args[1].clone()) {
-            Ok(code) => {
+        match io::get_file(args[1].clone()) {
+            Ok(file) => {
                 let mode = if args.len() > 2 {
                     if args[2].contains("e") {
                         Mode::Execute
@@ -25,8 +25,7 @@ fn main() {
                 } else {
                     Mode::Debug
                 };
-                let memory = assembly::assembly(code);
-                let mut vm = VirtualMachine::new(memory, mode);
+                let mut vm = VirtualMachine::new(file, mode);
                 vm.run();
             }
             Err(e) => {
