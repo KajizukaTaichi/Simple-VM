@@ -226,6 +226,7 @@ impl VirtualMachine {
             }
             Instruction::Read => {
                 let index = self.pop();
+                self.log_print(format!("ストレージ{}行目の値を読み込みます", index));
                 self.stack.push(
                     io::read_specific_line(&self.storage, index as usize)
                         .unwrap()
@@ -236,6 +237,7 @@ impl VirtualMachine {
             Instruction::Write => {
                 let index = self.pop();
                 let value = self.pop();
+                self.log_print(format!("ストレージ{}行目に値{}を書き込みます", index, value));
                 let _ = io::write_specific_line(
                     &self.storage,
                     index as usize,

@@ -34,14 +34,11 @@ pub fn read_specific_line(mut file: &std::fs::File, line_number: usize) -> io::R
 
 pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> io::Result<()> {
     file.seek(SeekFrom::Start(0))?;
-    let reader = io::BufReader::new(&mut file);
+    let reader = io::BufReader::new(file);
 
     let lines: Vec<_> = reader.lines().collect::<io::Result<_>>()?;
     if line_number > lines.len() {
-        return Err(io::Error::new(
-            io::ErrorKind::InvalidInput,
-            "Line number out of range",
-        ));
+        panic!("Line number out of range");
     }
 
     let mut contents = String::new();
@@ -54,10 +51,12 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
             contents.push('\n');
         }
     }
+    dbg!(contents.clone());
 
     file.set_len(0)?;
     file.seek(SeekFrom::Start(0))?;
     file.write_all(contents.as_bytes())?;
+    file.sync_all()?; // ファイルをディスクに書き込む
 
     Ok(())
 }
