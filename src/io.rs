@@ -51,7 +51,6 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
             contents.push('\n');
         }
     }
-    dbg!(contents.clone());
 
     file.set_len(0)?;
     file.seek(SeekFrom::Start(0))?;
