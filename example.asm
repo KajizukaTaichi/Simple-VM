@@ -8,8 +8,8 @@ program
     mul
 
     push 13
-    store
-
+    write
+    
     halt
 data
     5
