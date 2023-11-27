@@ -20,5 +20,5 @@ pub enum Instruction {
     Output,     // UTF-8で出力する
     Read,       // ストレージを読み込む
     Write,      // ストレージに書き込む
-    Halt,       //  プログラムを終了する
+    Halt,       // プログラムを終了する
 }
