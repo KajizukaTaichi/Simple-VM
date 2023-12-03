@@ -59,3 +59,41 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
 
     Ok(())
 }
+
+#[cfg(test)]
+mod test_file {
+    use std::fs::{File, self};
+use std::io::{self, BufRead, Write};
+
+use crate::io::write_specific_line;
+    #[test]
+    fn test_write_text() {
+// テスト用の一時ファイルを作成
+        let path = "C:\\test_file.txt";
+        let mut file = File::create(path).expect("Could not create file");
+
+        // テスト用のデータをファイルに書き込む
+        file.write_all(b"Line 1\nLine 2\nLine 3\n")
+            .expect("Could not write to file");
+
+        // ファイルを読み書きモードで開く
+        let mut file = File::open(path).expect("Could not open file");
+
+        // 特定の行にテキストを書き込む
+        let text_to_write = "This is a test line.";
+        write_specific_line(&mut file, 2, text_to_write)
+            .expect("Failed to write specific line");
+
+        // ファイルを読み込んで、変更が反映されていることを確認する
+        let lines = io::BufReader::new(File::open(path).expect("Could not open file"))
+            .lines()
+            .map(|l| l.expect("Could not read line"))
+            .collect::<Vec<String>>();
+
+        // 変更が反映されていることを確認
+        assert_eq!(lines[1], text_to_write);
+
+        // テストが終了したらファイルを削除する
+        fs::remove_file(path).expect("Failed to remove file");
+    }
+}
