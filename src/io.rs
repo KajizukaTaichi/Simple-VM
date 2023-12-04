@@ -73,7 +73,7 @@ use crate::io::write_specific_line;
         let mut file = File::create(path).expect("Could not create file");
 
         // テスト用のデータをファイルに書き込む
-        file.write_all(b"Line 1\nLine 2\nLine 3\n")
+        file.write_all(b"Line 1\r\nLine 2\r\nLine 3\r\n")
             .expect("Could not write to file");
 
         // ファイルを読み書きモードで開く
