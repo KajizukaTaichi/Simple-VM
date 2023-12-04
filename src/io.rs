@@ -69,7 +69,7 @@ use crate::io::write_specific_line;
     #[test]
     fn test_write_text() {
 // テスト用の一時ファイルを作成
-        let path = "C:\\test_file.txt";
+        let path = r"C:\Users\admin\test_file.txt";
         let mut file = File::create(path).expect("Could not create file");
 
         // テスト用のデータをファイルに書き込む
