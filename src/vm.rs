@@ -261,7 +261,8 @@ impl VirtualMachine {
                         let caption = CString::new("Simple VM MessageBox").expect("CString::new failed");
 
                         // `MessageBoxA`関数の呼び出し
-                        MessageBoxA(std::ptr::null_mut(), text.as_ptr(), caption.as_ptr(), MB_OK);
+                        let number = MessageBoxA(std::ptr::null_mut(), text.as_ptr(), caption.as_ptr(), MB_OK);
+                        self.stack.push(number);
                     },
                     _ => {
                         self.log_print("エラー! その番号のAPIはありません".to_string());
