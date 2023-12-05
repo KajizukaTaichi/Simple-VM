@@ -62,13 +62,13 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
 
 #[cfg(test)]
 mod test_file {
-    use std::fs::{File, self};
-use std::io::{self, BufRead, Write};
+    use std::fs::{self, File};
+    use std::io::{self, BufRead, Write};
 
-use crate::io::write_specific_line;
+    use crate::io::write_specific_line;
     #[test]
     fn test_write_text() {
-// テスト用の一時ファイルを作成
+        // テスト用の一時ファイルを作成
         let path = r"C:\Users\admin\test_file.txt";
         let mut file = File::create(path).expect("Could not create file");
 
@@ -81,8 +81,7 @@ use crate::io::write_specific_line;
 
         // 特定の行にテキストを書き込む
         let text_to_write = "This is a test line.";
-        write_specific_line(&mut file, 2, text_to_write)
-            .expect("Failed to write specific line");
+        write_specific_line(&mut file, 2, text_to_write).expect("Failed to write specific line");
 
         // ファイルを読み込んで、変更が反映されていることを確認する
         let lines = io::BufReader::new(File::open(path).expect("Could not open file"))

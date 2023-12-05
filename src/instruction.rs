@@ -21,5 +21,5 @@ pub enum Instruction {
     Read,       // ストレージを読み込む
     Write,      // ストレージに書き込む
     Halt,       // プログラムを終了する
-    WinAPI      // Windows APIを呼び出す
+    WinAPI,     // Windows APIを呼び出す
 }

@@ -53,6 +53,7 @@ pub fn assembly(asm: String) -> Vec<i32> {
                 "read" => memory.push(17),
                 "write" => memory.push(18),
                 "halt" => memory.push(19),
+                "winapi" => memory.push(20),
                 "" => continue,
                 _ => {
                     println!("エラー! 不明な命令です");

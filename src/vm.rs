@@ -1,4 +1,6 @@
+use std::ffi::CString;
 use std::{fs::File, io::Read};
+use winapi::um::winuser::{MessageBoxA, MB_OK};
 
 use crate::assembly;
 use crate::instruction::Instruction;
@@ -251,6 +253,20 @@ impl VirtualMachine {
                 self.log_print(format!("プログラムを終了します"));
                 std::process::exit(0);
             }
+            Instruction::WinAPI => {
+                match self.pop() {
+                    1 => unsafe {
+                        let text = CString::new("Hello Windows API from Simple VM").expect("CString::new failed");
+                        let caption = CString::new("Simple VM MessageBox").expect("CString::new failed");
+
+                        // `MessageBoxA`関数の呼び出し
+                        MessageBoxA(std::ptr::null_mut(), text.as_ptr(), caption.as_ptr(), MB_OK);
+                    },
+                    _ => {
+                        self.log_print("エラー! その番号のAPIはありません".to_string());
+                    }
+                }
+            }
         }
     }
 
@@ -286,6 +302,7 @@ impl VirtualMachine {
                 17 => Instruction::Read,
                 18 => Instruction::Write,
                 19 => Instruction::Halt,
+                20 => Instruction::WinAPI,
                 _ => {
                     self.pc += 1;
                     continue;
