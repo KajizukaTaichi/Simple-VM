@@ -256,6 +256,7 @@ impl VirtualMachine {
             Instruction::WinAPI => {
                 match self.pop() {
                     1 => unsafe {
+                        self.log_print("WindowsAPIを呼び出してメッセージボックスを表示します".to_string());
                         let text = CString::new("Hello Windows API from Simple VM").expect("CString::new failed");
                         let caption = CString::new("Simple VM MessageBox").expect("CString::new failed");
 
