@@ -30,31 +30,31 @@ pub fn assembly(asm: String) -> Vec<i32> {
 
         if let Mode::Program = mode {
             match args[0] {
-                "add" => memory.push(0),
-                "sub" => memory.push(1),
-                "mul" => memory.push(2),
-                "div" => memory.push(3),
-                "mod" => memory.push(4),
+                "add" => memory.push(1),
+                "sub" => memory.push(2),
+                "mul" => memory.push(3),
+                "div" => memory.push(4),
+                "mod" => memory.push(5),
                 "push" => {
-                    memory.push(5);
+                    memory.push(6);
                     memory.push(args[1].trim().parse().unwrap_or(0))
                 }
-                "pop" => memory.push(6),
-                "equal" => memory.push(7),
-                "lessthan" => memory.push(8),
-                "and" => memory.push(9),
-                "or" => memory.push(10),
-                "not" => memory.push(11),
-                "jump" => memory.push(12),
-                "load" => memory.push(13),
-                "store" => memory.push(14),
-                "input" => memory.push(15),
-                "output" => memory.push(16),
-                "read" => memory.push(17),
-                "write" => memory.push(18),
-                "halt" => memory.push(19),
-                "winapi" => memory.push(20),
-                "" => continue,
+                "pop" => memory.push(7),
+                "equal" => memory.push(8),
+                "lessthan" => memory.push(9),
+                "and" => memory.push(10),
+                "or" => memory.push(11),
+                "not" => memory.push(12),
+                "jump" => memory.push(13),
+                "load" => memory.push(14),
+                "store" => memory.push(15),
+                "input" => memory.push(16),
+                "output" => memory.push(17),
+                "read" => memory.push(18),
+                "write" => memory.push(19),
+                "halt" => memory.push(20),
+                "winapi" => memory.push(21),
+                "" => memory.push(0),
                 _ => {
                     println!("エラー! 不明な命令です");
                     continue;
