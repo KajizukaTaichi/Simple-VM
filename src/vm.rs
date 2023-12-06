@@ -281,30 +281,30 @@ impl VirtualMachine {
         while self.pc < self.memory.len() {
             let instruction = self.memory[self.pc].clone();
             let result = match instruction {
-                0 => Instruction::Add,
-                1 => Instruction::Sub,
-                2 => Instruction::Mul,
-                3 => Instruction::Div,
-                4 => Instruction::Mod,
-                5 => {
+                1 => Instruction::Add,
+                2 => Instruction::Sub,
+                3 => Instruction::Mul,
+                4 => Instruction::Div,
+                5 => Instruction::Mod,
+                6 => {
                     self.pc += 1;
                     Instruction::Push(self.memory[self.pc])
                 }
-                6 => Instruction::Pop,
-                7 => Instruction::Equal,
-                8 => Instruction::LessThan,
-                9 => Instruction::And,
-                10 => Instruction::Or,
-                11 => Instruction::Not,
-                12 => Instruction::JumpIfZero,
-                13 => Instruction::Load,
-                14 => Instruction::Store,
-                15 => Instruction::Input,
-                16 => Instruction::Output,
-                17 => Instruction::Read,
-                18 => Instruction::Write,
-                19 => Instruction::Halt,
-                20 => Instruction::WinAPI,
+                7 => Instruction::Pop,
+                8 => Instruction::Equal,
+                9 => Instruction::LessThan,
+                10 => Instruction::And,
+                11 => Instruction::Or,
+                12 => Instruction::Not,
+                13 => Instruction::JumpIfZero,
+                14 => Instruction::Load,
+                15 => Instruction::Store,
+                16 => Instruction::Input,
+                17 => Instruction::Output,
+                18 => Instruction::Read,
+                19 => Instruction::Write,
+                20 => Instruction::Halt,
+                21 => Instruction::WinAPI,
                 _ => {
                     self.pc += 1;
                     continue;
