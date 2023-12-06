@@ -307,7 +307,7 @@ impl VirtualMachine {
                 21 => Instruction::WinAPI,
                 _ => {
                     self.pc += 1;
-                    self.log_print(format!("命令コード{instruction}は定義されてません"));
+                    self.log_print(format!("エラー! 命令コード{instruction}は定義されてません"));
                     continue;
                 }
             };
