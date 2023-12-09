@@ -1,4 +1,5 @@
-program
-    push 58
-    output
-    halt
+input
+push
+1
+write
+halt

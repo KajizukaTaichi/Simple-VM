@@ -1,13 +1,6 @@
-enum Mode {
-    Data,
-    Program,
-}
-
 /// アセンブラ
 pub fn assembly(asm: String) -> Vec<i32> {
     println!("アセンブル中・・・");
-
-    let mut mode = Mode::Program;
     let mut memory: Vec<i32> = Vec::new();
 
     for code in asm.split("\n") {
@@ -19,26 +12,20 @@ pub fn assembly(asm: String) -> Vec<i32> {
         };
 
         if args[0] == "data" {
-            mode = Mode::Data;
             continue;
         }
 
         if args[0] == "program" {
-            mode = Mode::Program;
             continue;
         }
 
-        if let Mode::Program = mode {
             match args[0] {
                 "add" => memory.push(1),
                 "sub" => memory.push(2),
                 "mul" => memory.push(3),
                 "div" => memory.push(4),
                 "mod" => memory.push(5),
-                "push" => {
-                    memory.push(6);
-                    memory.push(args[1].trim().parse().unwrap_or(0))
-                }
+                "push" => memory.push(6),
                 "pop" => memory.push(7),
                 "equal" => memory.push(8),
                 "lessthan" => memory.push(9),
@@ -56,14 +43,8 @@ pub fn assembly(asm: String) -> Vec<i32> {
                 "winapi" => memory.push(21),
                 "" => memory.push(0),
                 _ => {
-                    println!("エラー! 不明な命令です");
-                    continue;
-                }
-            }
-        } else {
-            if !args[0].is_empty() {
                 memory.push(args[0].trim().parse().unwrap_or(0))
-            }
+            }            
         }
     }
 
