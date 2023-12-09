@@ -1,4 +1,5 @@
 program
     push 1
-    winapi
-    halt
+    push 5
+    write
+1

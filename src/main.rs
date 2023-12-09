@@ -14,7 +14,7 @@ fn main() {
     let args = env::args().collect::<Vec<_>>();
 
     if args.len() > 1 {
-        match io::get_file(args[1].clone()) {
+        match io::open_file(args[1].clone()) {
             Ok(file) => {
                 let mode = if args.len() > 2 {
                     if args[2].contains("e") {
