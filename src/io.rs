@@ -41,7 +41,7 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
 
     
     let lines: Vec<_> = reader.lines().collect::<io::Result<_>>()?;
-    dbg!(line_number, lines.len());
+    // dbg!(line_number, lines.len());
     if line_number > lines.len() {
         panic!("Line number out of range");
     }
