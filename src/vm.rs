@@ -87,6 +87,7 @@ impl VirtualMachine {
 
     fn execute(&mut self, instruction: Instruction) {
         match instruction {
+            Instruction::Nop => {}
             Instruction::Add => {
                 let b = self.pop();
                 let a = self.pop();
@@ -256,12 +257,21 @@ impl VirtualMachine {
             Instruction::WinAPI => {
                 match self.pop() {
                     1 => unsafe {
-                        self.log_print("WindowsAPIを呼び出してメッセージボックスを表示します".to_string());
-                        let text = CString::new("Hello Windows API from Simple VM").expect("CString::new failed");
-                        let caption = CString::new("Simple VM MessageBox").expect("CString::new failed");
+                        self.log_print(
+                            "WindowsAPIを呼び出してメッセージボックスを表示します".to_string(),
+                        );
+                        let text = CString::new("Hello Windows API from Simple VM")
+                            .expect("CString::new failed");
+                        let caption =
+                            CString::new("Simple VM MessageBox").expect("CString::new failed");
 
                         // `MessageBoxA`関数の呼び出し
-                        let number = MessageBoxA(std::ptr::null_mut(), text.as_ptr(), caption.as_ptr(), MB_OK);
+                        let number = MessageBoxA(
+                            std::ptr::null_mut(),
+                            text.as_ptr(),
+                            caption.as_ptr(),
+                            MB_OK,
+                        );
                         self.stack.push(number);
                     },
                     _ => {
@@ -281,6 +291,7 @@ impl VirtualMachine {
         while self.pc < self.memory.len() {
             let instruction = self.memory[self.pc].clone();
             let result = match instruction {
+                0 => Instruction::Nop,
                 1 => Instruction::Add,
                 2 => Instruction::Sub,
                 3 => Instruction::Mul,

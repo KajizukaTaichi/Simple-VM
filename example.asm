@@ -1,5 +1,8 @@
+push
+
+winapi
 input
 push
-1
+2
 write
 halt

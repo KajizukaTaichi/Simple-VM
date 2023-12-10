@@ -1,6 +1,7 @@
 /// 命令セット
 #[derive(Debug, Clone, Copy)]
 pub enum Instruction {
+    Nop,
     Add,        // 足し算する
     Sub,        // 引き算する
     Mul,        // 掛け算する

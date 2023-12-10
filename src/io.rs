@@ -12,10 +12,8 @@ pub fn input(prompt: &str) -> String {
 /// ファイルを開く
 pub fn open_file(name: String) -> Result<File, Error> {
     let mut binding = std::fs::OpenOptions::new();
-    let options = binding
-        .read(true)
-        .write(true);
-    options.open(name) 
+    let options = binding.read(true).write(true);
+    options.open(name)
 }
 
 pub fn read_specific_line(mut file: &File, line_number: usize) -> io::Result<String> {
@@ -39,7 +37,6 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
     file.seek(SeekFrom::Start(0))?;
     let reader = io::BufReader::new(file);
 
-    
     let lines: Vec<_> = reader.lines().collect::<io::Result<_>>()?;
     // dbg!(line_number, lines.len());
     if line_number > lines.len() {
@@ -67,7 +64,7 @@ pub fn write_specific_line(mut file: &File, line_number: usize, text: &str) -> i
     file.write_all(contents.as_bytes())?;
     // dbg!("test line", line!(), file.metadata()?);
     file.sync_all()?; // ファイルをディスクに書き込む
-    // dbg!("test line", line!(), file.metadata()?);
+                      // dbg!("test line", line!(), file.metadata()?);
 
     Ok(())
 }
@@ -77,7 +74,7 @@ mod test_file {
     use std::fs::{self, File};
     use std::io::{self, BufRead};
 
-    use crate::io::{write_specific_line, open_file};
+    use crate::io::{open_file, write_specific_line};
     #[test]
     fn test_write_text() {
         // // テスト用の一時ファイルを作成
