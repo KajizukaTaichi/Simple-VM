@@ -1,5 +1,5 @@
 push
-
+0
 winapi
 input
 push
